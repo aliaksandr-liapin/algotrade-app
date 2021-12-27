@@ -1,6 +1,6 @@
-import sqlite3
+import sqlite3, config
 
-connection = sqlite3.connect('app.db')
+connection = sqlite3.connect(config.DB_PATH)
 cursor = connection.cursor()
 
 cursor.execute("""
