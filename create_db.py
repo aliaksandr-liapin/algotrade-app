@@ -1,4 +1,4 @@
-import sqlite3, config
+import sqlite3, configs.config as config
 
 connection = sqlite3.connect(config.DB_PATH)
 cursor = connection.cursor()

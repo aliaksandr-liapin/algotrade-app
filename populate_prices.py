@@ -1,5 +1,5 @@
 import sqlite3
-import config
+import configs.config as config
 import alpaca_trade_api as tradeAPI
 
 api = tradeAPI.REST(config.API_KEY, config.API_SECRET, config.API_ENDPOINT)

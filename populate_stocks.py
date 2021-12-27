@@ -1,5 +1,5 @@
 import sqlite3
-import config
+import configs.config as config
 import alpaca_trade_api as tradeAPI
 
 
