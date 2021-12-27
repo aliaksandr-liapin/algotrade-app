@@ -1,18 +1,12 @@
-import sqlite3
-import configs.config as config
-import alpaca_trade_api as tradeAPI
+import connect
 
-
-
-connection = sqlite3.connect(config.DB_PATH)
-connection.row_factory = sqlite3.Row
-cursor = connection.cursor()
+connection, cursor = connect.getDbConnect()
 
 cursor.execute("SELECT symbol, company FROM stock")
 rows = cursor.fetchall()
 symbols = [row['symbol'] for row in rows]
 
-api = tradeAPI.REST(config.API_KEY, config.API_SECRET, config.API_ENDPOINT)
+api = connect.getAlpacaAPIconnect()
 assets = api.list_assets()
 
 for asset in assets:

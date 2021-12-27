@@ -1,7 +1,6 @@
-import sqlite3, configs.config as config
+import connect
 
-connection = sqlite3.connect(config.DB_PATH)
-cursor = connection.cursor()
+connection, cursor = connect.getDbConnect()
 
 cursor.execute("""
     CREATE TABLE IF NOT EXISTS stock (

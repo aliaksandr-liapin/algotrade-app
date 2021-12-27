@@ -1,10 +1,11 @@
-import sqlite3
-import configs.config as config
-import alpaca_trade_api as tradeAPI
+import connect
 
-api = tradeAPI.REST(config.API_KEY, config.API_SECRET, config.API_ENDPOINT)
+connection, cursor = connect.getDbConnect()
+api = connect.getAlpacaAPIconnect()
 
 # Get daily price data for AAPL over the last 5 trading days.
-barset = api.get_barset('AAPL', 'day', limit=5)
-aapl_bars = barset['AAPL']
-print(aapl_bars)
+barset = api.get_barset(['AAPL', 'MSFT'], 'day', limit=5)
+for bars in barset:
+    print(bars)
+    
+# connection.commit()
