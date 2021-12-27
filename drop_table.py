@@ -1,3 +1,8 @@
-import sqlite3, configs.config as config
+import connect
 
-connection
+connection, cursor = connect.getDbConnect()
+cursor.execute("DROP TABLE stock")
+cursor.execute("DROP TABLE stock_price")
+
+
+connection.commit()
