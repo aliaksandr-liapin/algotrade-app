@@ -1,2 +1,5 @@
 yfinance
 alpaca-trade-api
+fastapi
+uvicorn
+junja2

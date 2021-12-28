@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <title>Stocks</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    </head>
+    <body>
+        <div class="ui container">
+            <h1>Stock {{ticker}}</h1>
+            <table class="ui celled table">
+                <thead>
+                  <tr><th>Date</th>
+                  <th>Open</th>
+                  <th>High</th>
+                  <th>Low</th>
+                  <th>Close</th>
+                  <th>Volume</th>
+                </tr></thead>
+            {% for item in prices %}
+                <tbody>
+                  <tr>
+                    <td>{{ item.date }}</td>
+                    <td>{{ item.open }}</td>
+                    <td>{{ item.high }}</td>
+                    <td>{{ item.low }}</td>
+                    <td>{{ item.close }}</td>
+                    <td>{{ item.volume }}</td>
+                  </tr>
+                </tbody>
+            {% endfor %}
+              </table>
+            <table>
+        </div>
+    </body>
+</html>
