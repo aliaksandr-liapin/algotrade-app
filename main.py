@@ -7,6 +7,18 @@ templates = Jinja2Templates(directory="templates")
 
 @app.get('/')
 def index(request: Request):
+    stock_filter = request.query_params.get('filter', False)
+    
+    if stock_filter == 'new_intraday_hights':
+        pass
+    elif stock_filter == 'new_closing_hights':
+        pass
+    elif stock_filter == 'new_intraday_lows':
+        pass
+    elif stock_filter == 'new_closing_lows':
+        pass
+    else:
+        pass        
     connection, cursor = db.getDbConnect()
     cursor.execute("SELECT * FROM stock ORDER BY symbol")
 
@@ -23,4 +35,4 @@ def stock_detail(request: Request, symbol):
     cursor.execute("SELECT * FROM stock_price WHERE stock_id = ?", (rows['id'],))
     prices = cursor.fetchall()
     
-    return templates.TemplateResponse("stock.html", {"request": request, "prices": prices, "ticker": symbol})
+    return templates.TemplateResponse("stock.html", {"request": request, "prices": prices, "ticker": symbol, "stock": rows})
