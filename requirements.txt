@@ -3,3 +3,4 @@ alpaca-trade-api
 fastapi
 uvicorn
 jinja2
+python-multipart

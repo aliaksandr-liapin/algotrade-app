@@ -1,1 +1,12 @@
 # algotrade-app
+
+DLB
+IQ
+MCHI
+MSP
+RAMP
+SAGE
+SCCO
+SFIX
+SOCL
+WDFC
