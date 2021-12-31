@@ -27,14 +27,14 @@ cursor.execute("""
 
 cursor.execute("""
     CREATE TABLE IF NOT EXISTS strategy (
-        id INTEGER PRIMARY_KEY,
+        id INTEGER PRIMARY KEY,
         name NOT NULL
     )
     """)
 
 cursor.execute("""
     CREATE TABLE IF NOT EXISTS stock_strategy (
-        stock_id INTEGER NOT NULL,
+        stock_id INTEGER PRIMARY KEY,
         strategy_id INTEGER NOT NULL,
         FOREIGN KEY (stock_id) REFERENCES stock (id)
         FOREIGN KEY (strategy_id) REFERENCES strategy (id)

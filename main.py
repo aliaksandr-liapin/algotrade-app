@@ -12,8 +12,6 @@ def index(request: Request):
     stock_filter = request.query_params.get('filter', False)
     connection, cursor = db.getDbConnect()
     
-
-        
     if stock_filter == 'new_intraday_hights':
         pass
     elif stock_filter == 'new_closing_hights':
