@@ -16,17 +16,24 @@ def index(request: Request):
         pass
     elif stock_filter == 'new_closing_hights':
         cursor.execute("""
-                select * from (
-                    select symbol, name, stock_id, max(close), date
-                    from stock_price join stock on stock.id = stock_price.stock_id
-                    group by stock_id
-                    order by symbol
-                ) where date = ?
-                """, (date.today().isoformat(),))
+            select * from (
+                select symbol, name, stock_id, max(close), date
+                from stock_price join stock on stock.id = stock_price.stock_id
+                group by stock_id
+                order by symbol
+            ) where date = ?
+            """, (date.today().isoformat(),))
     elif stock_filter == 'new_intraday_lows':
         pass
     elif stock_filter == 'new_closing_lows':
-        pass
+        cursor.execute("""
+            select * from (
+                select symbol, name, stock_id, min(close), date
+                from stock_price join stock on stock.id = stock_price.stock_id
+                group by stock_id
+                order by symbol
+            ) where date = ?
+            """, (date.today().isoformat(),))
     else:
         cursor.execute("SELECT * FROM stock ORDER BY symbol")     
 

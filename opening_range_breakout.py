@@ -1,12 +1,18 @@
+from re import S
 import connect as db
 import yfinance as yf
 from datetime import date
 
 
-
 connection, cursor = db.getDbConnect()
 api = db.getAlpacaAPIconnect()
 
+current_date = date.today().isoformat()
+start_minute_bar = f'{current_date} 09:30:00-04:00'
+end_minute_bar = f'{current_date} 09:45:00-04:00'
+
+orders = api.list_orders(status='all', limit = 500, after=f'{current_date}T13:30:00Z')
+existing_order_symbols = [order.symbol for order in orders]
 
 cursor.execute("SELECT id FROM strategy WHERE name = 'opening_range_breakout'")
 strategy_id = cursor.fetchone()['id']
@@ -17,10 +23,6 @@ cursor.execute("""
                WHERE stock_strategy.strategy_id = (?)""", (strategy_id,))
 stocks = cursor.fetchall()
 symbols = [stock['symbol'] for stock in stocks]
-
-current_date = date.today().isoformat()
-start_minute_bar = f'{current_date} 09:30:00-04:00'
-end_minute_bar = f'{current_date} 09:45:00-04:00'
 
 # getting 1 minute stock data (source must be defined)
 for symbol in symbols:
@@ -43,4 +45,29 @@ for symbol in symbols:
     after_opening_range_mask = minute_bar.index >= end_minute_bar
     after_opening_range_bar = minute_bar.loc[after_opening_range_mask]
     
+    after_opening_range_breakout = after_opening_range_bar[after_opening_range_bar['close'] > opening_range_high]
     
+    if not after_opening_range_breakout.empty:
+        if symbol not in existing_order_symbols:
+            limit_price = after_opening_range_breakout.iloc[0]['close']
+            print(limit_price)
+            print(f'placing order for {symbol} at {limit_price}, closed_above {opening_range_high} at {after_opening_range_breakout.iloc[0]}')
+
+            api.submit_order(
+                symbol=symbol,
+                side='buy',
+                type='limit',
+                qty='100',
+                time_in_force='day',
+                order_class='bracket',
+                limit_price=limit_price,
+                take_profit=dict(
+                    limit_price=limit_price + opening_range,
+                ),
+                stop_loss=dict(
+                    stop_price=limit_price - opening_range,
+
+                )
+            )
+        else:
+            print(f'Already an order for {symbol}, skipping')
